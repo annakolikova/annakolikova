@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anna Kolikova — Business Operations</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --cream: #F5F0E8; --warm-white: #FAF8F4; --dark: #1C1C1C; --dark-2: #2A2520;
+    --gold: #C4973A; --gold-light: #D4A84B; --text: #3A3530; --text-light: #6B6560;
+    --border: #E0D8CC; --beige-dark: #E8E0D4;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Jost', sans-serif; background: var(--warm-white); color: var(--text); line-height: 1.6; font-size: 20px; }
+
+  /* ── LANG SWITCHER ── */
+  .lang-switcher {
+    position: fixed; top: 22px; left: 24px; z-index: 1000;
+    display: flex; align-items: center; gap: 2px;
+  }
+  .lang-btn {
+    padding: 4px 6px; font-size: 11px; font-weight: 500; letter-spacing: 1.5px;
+    text-transform: uppercase; cursor: pointer; border: none; background: transparent;
+    color: var(--text-light); transition: color 0.2s; font-family: 'Jost', sans-serif;
+  }
+  .lang-btn.active { color: var(--text); font-weight: 700; }
+  .lang-btn:hover:not(.active) { color: var(--text); }
+  .lang-sep { color: var(--text-light); font-size: 11px; opacity: 0.4; }
+
+  /* ── LANGUAGE VISIBILITY ── */
+  .t-en, .t-ru { display: none; }
+  body.lang-en .t-en { display: inline; }
+  body.lang-ru .t-ru { display: inline; }
+  .b-en, .b-ru { display: none; }
+  body.lang-en .b-en { display: block; }
+  body.lang-ru .b-ru { display: block; }
+
+  /* ── HERO ── */
+  .hero { background: var(--cream); min-height: 520px; display: grid; grid-template-columns: 1fr 1fr; position: relative; overflow: hidden; }
+  .hero-left { padding: 52px 56px 52px 72px; display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 2; }
+  .hero-tag { font-size: 13px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: var(--text-light); margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+  .hero-tag .dot { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; flex-shrink: 0; }
+  .hero-name { font-family: 'Playfair Display', serif; font-size: 84px; font-weight: 900; line-height: 0.95; color: var(--dark); margin-bottom: 24px; letter-spacing: -1px; }
+  .hero-tagline { font-family: 'Cormorant Garamond', serif; font-size: 27px; color: var(--text); line-height: 1.4; margin-bottom: 20px; }
+  .hero-divider { width: 40px; height: 2px; background: var(--gold); margin-bottom: 20px; }
+  .hero-desc { font-size: 16px; color: var(--text-light); line-height: 1.7; max-width: 380px; margin-bottom: 36px; }
+  .btn-resume { display: inline-flex; align-items: center; gap: 12px; background: var(--dark); color: #fff; padding: 14px 28px; font-size: 13px; font-weight: 500; letter-spacing: 1px; text-decoration: none; width: fit-content; transition: background 0.3s; }
+  .btn-resume:hover { background: var(--dark-2); }
+  .hero-right { position: relative; display: flex; align-items: flex-end; justify-content: center; }
+  .hero-dark-block { position: absolute; top: 0; right: 0; width: 55%; height: 82%; background: var(--dark-2); z-index: 0; }
+  .hero-circle { position: absolute; top: 20px; right: 40px; width: 340px; height: 340px; border-radius: 50%; background: var(--beige-dark); z-index: 1; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .photo-hint { text-align: center; color: var(--text-light); font-size: 13px; }
+  .photo-hint span { font-size: 32px; display: block; margin-bottom: 8px; }
+  .hero-dot { position: absolute; bottom: 60px; right: 20px; width: 8px; height: 8px; background: var(--gold); border-radius: 50%; z-index: 3; }
+
+  /* ── SECTIONS ── */
+  .section { padding: 64px 72px; }
+  .section-alt { background: var(--cream); }
+  .section-label { font-size: 13px; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--text); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 2px solid var(--gold); display: inline-block; }
+
+  .about-wide { max-width: 720px; }
+  .about-text p { color: var(--text-light); line-height: 1.8; margin-bottom: 16px; font-size: 16px; }
+  .about-accent { color: var(--gold) !important; font-weight: 500; font-style: italic; }
+
+  /* ── TWO COL ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; }
+  .career-company { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--dark); margin-bottom: 4px; }
+  .career-role { font-size: 15px; color: var(--text-light); letter-spacing: 0.5px; margin-bottom: 16px; }
+  .career-desc { font-size: 16px; color: var(--text-light); line-height: 1.7; margin-bottom: 20px; }
+  .career-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
+  .career-list li { font-size: 15.5px; color: var(--text); padding-left: 16px; position: relative; }
+  .career-list li::before { content: '•'; position: absolute; left: 0; color: var(--gold); }
+  .quote-block { background: var(--cream); border-left: 3px solid var(--gold); padding: 20px 24px; font-family: 'Cormorant Garamond', serif; font-size: 19px; font-style: italic; color: var(--text); line-height: 1.6; position: relative; }
+  .quote-block::before { content: '❝'; font-size: 28px; color: var(--gold); position: absolute; top: -8px; left: -4px; font-style: normal; }
+  .career-result { font-size: 15px; color: var(--gold); font-weight: 500; display: flex; align-items: flex-start; gap: 8px; line-height: 1.5; }
+  .career-result::before { content: '→'; flex-shrink: 0; }
+
+  /* ── CASES ── */
+  .cases-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; border-top: 1px solid var(--border); }
+  .case-item { padding: 36px 32px; border-right: 1px solid var(--border); }
+  .case-item:last-child { border-right: none; }
+  .case-num { font-family: 'Playfair Display', serif; font-size: 44px; font-weight: 900; color: var(--beige-dark); line-height: 1; margin-bottom: 8px; }
+  .case-title { font-family: 'Playfair Display', serif; font-size: 19px; font-weight: 700; color: var(--dark); line-height: 1.3; margin-bottom: 16px; }
+  .case-text { font-size: 15.5px; color: var(--text-light); line-height: 1.75; margin-bottom: 20px; }
+  .case-result { font-size: 15px; color: var(--gold); font-weight: 500; display: flex; align-items: flex-start; gap: 8px; line-height: 1.5; }
+  .case-result::before { content: '→'; flex-shrink: 0; }
+
+  /* ── THREE COL ── */
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+  .col-block { padding: 40px 36px; border-right: 1px solid var(--border); }
+  .col-block:last-child { border-right: none; }
+  .col-block-dark { background: var(--dark); color: #fff; border-right: none; }
+  .steps { display: flex; flex-direction: column; gap: 24px; }
+  .step { display: flex; gap: 16px; align-items: flex-start; }
+  .step-num { width: 28px; height: 28px; background: var(--dark); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+  .step-title { font-weight: 600; font-size: 16px; color: var(--dark); margin-bottom: 4px; }
+  .step-desc { font-size: 15px; color: var(--text-light); line-height: 1.6; }
+  .superpowers-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .superpower { display: flex; flex-direction: column; gap: 6px; }
+  .superpower-icon { color: var(--text-light); }
+  .superpower-title { font-size: 15px; font-weight: 600; color: var(--dark); line-height: 1.3; }
+  .superpowers-list { display: flex; flex-direction: column; gap: 14px; }
+  .superpower-row { display: flex; align-items: center; gap: 12px; }
+  .superpower-row .superpower-icon { color: var(--text-light); flex-shrink: 0; }
+  .superpower-row .superpower-title { font-size: 15px; font-weight: 600; color: var(--dark); line-height: 1.3; }
+  .contact-list { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+  .contact-list li { font-size: 15.5px; color: rgba(255,255,255,0.8); padding-left: 20px; position: relative; line-height: 1.5; }
+  .contact-list li::before { content: '✓'; position: absolute; left: 0; color: var(--gold-light); font-size: 12px; }
+  .contact-cta { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-style: italic; color: var(--gold-light); line-height: 1.5; }
+
+  /* ── BOTTOM GRID ── */
+  .bottom-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; border-top: 1px solid var(--border); }
+  .bottom-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; border-top: 1px solid var(--border); }
+  .bottom-col { padding: 40px 28px; border-right: 1px solid var(--border); }
+  .bottom-col:last-child { border-right: none; }
+  .tools-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .tools-list li { font-size: 15.5px; color: var(--text); }
+  .tools-inline { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 8px; }
+  .tools-inline li { font-size: 15px; color: var(--text-light); }
+  .values-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .values-list li { font-size: 15.5px; color: var(--text-light); padding-left: 18px; position: relative; line-height: 1.5; }
+  .values-list li::before { content: '✓'; position: absolute; left: 0; color: var(--gold); font-size: 11px; }
+  .hobby-item { display: flex; gap: 12px; margin-bottom: 20px; align-items: flex-start; }
+  .hobby-icon { color: var(--text-light); flex-shrink: 0; margin-top: 2px; }
+  .hobby-title { font-size: 15.5px; font-weight: 600; color: var(--dark); margin-bottom: 4px; }
+  .hobby-desc { font-size: 14.5px; color: var(--text-light); line-height: 1.5; }
+  .personal-text { font-size: 15.5px; color: var(--text-light); line-height: 1.75; margin-bottom: 14px; }
+  .signature { font-family: 'Cormorant Garamond', serif; font-size: 34px; font-style: italic; color: var(--text); font-weight: 400; margin-top: 8px; }
+
+  /* ── FOOTER ── */
+  .footer { background: var(--dark); color: #fff; padding: 40px 72px; display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: center; }
+  .footer-quote { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-style: italic; color: rgba(255,255,255,0.85); line-height: 1.5; display: flex; gap: 12px; align-items: flex-start; }
+  .footer-quote-mark { font-size: 30px; color: var(--gold); line-height: 1; flex-shrink: 0; font-style: normal; }
+  .btn-contact { background: var(--gold); color: #fff; padding: 14px 28px; font-size: 15px; font-weight: 500; letter-spacing: 1px; text-decoration: none; white-space: nowrap; transition: background 0.3s; }
+  .btn-contact:hover { background: var(--gold-light); }
+  .footer-contacts { display: flex; flex-direction: column; gap: 10px; }
+  .footer-contact-item { display: flex; align-items: center; gap: 10px; font-size: 15px; color: rgba(255,255,255,0.7); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .hero-left > * { animation: fadeUp 0.6s ease forwards; opacity: 0; }
+  .hero-tag { animation-delay: 0.1s; } .hero-name { animation-delay: 0.2s; }
+  .hero-tagline { animation-delay: 0.3s; } .hero-divider { animation-delay: 0.35s; }
+  .hero-desc { animation-delay: 0.4s; } .btn-resume { animation-delay: 0.5s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; min-height: auto; } .hero-right { display: none; }
+    .hero-left { padding: 40px 32px; } .hero-name { font-size: 56px; }
+    .section { padding: 48px 32px; }
+    .two-col, .three-col, .cases-grid, .bottom-grid { grid-template-columns: 1fr; }
+    .case-item, .col-block, .bottom-col { border-right: none; border-bottom: 1px solid var(--border); }
+    .footer { grid-template-columns: 1fr; padding: 40px 32px; gap: 24px; }
+    .lang-switcher { top: 12px; left: 12px; }
+  }
+
+  .hobby-link { color: var(--gold); text-decoration: none; border-bottom: 1px solid var(--gold); }
+</style>
+</head>
+<body class="lang-en">
+
+<!-- LANG SWITCHER -->
+<div class="lang-switcher">
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <span class="lang-sep">/</span>
+  <button class="lang-btn" onclick="setLang('ru')">RU</button>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">
+      Business Operations <span class="dot"></span>
+      Coordinator
+      <span class="dot"></span> Project Manager
+    </div>
+    <h1 class="hero-name"><span class="t-en">Anna<br>Kolikova</span><span class="t-ru">Анна<br>Коликова</span></h1>
+    <p class="hero-tagline">
+      <span class="t-en">Bringing order to chaos.<br>Simplifying complexity. Delivering results.</span>
+      <span class="t-ru">Навожу порядок в хаосе.<br>Упрощаю сложное. Довожу до результата.</span>
+    </p>
+    <div class="hero-divider"></div>
+    <p class="hero-desc">
+      <span class="t-en">I build clear processes, establish communication, and make sure the team can work calmly and effectively.</span>
+      <span class="t-ru">Я создаю понятные процессы, выстраиваю коммуникацию и делаю так, чтобы команда могла работать спокойно и эффективно.</span>
+    </p>
+  </div>
+  <div class="hero-right">
+    <div class="hero-dark-block"></div>
+    <div class="hero-circle">
+     <img src="Me.jpg" alt="My photo" style="width: 100%; height: 100%; object-fit: cover; object-position: center 55%;">
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT (two columns: text left, values right) -->
+<section class="section">
+  <div class="two-col" style="gap: 72px;">
+    <div>
+      <div class="section-label"><span class="t-en">About Me</span><span class="t-ru">Обо мне</span></div>
+      <div class="about-text">
+        <p>
+          <span class="t-en">I'm comfortable working in situations where there's no ready-made structure. I dig into context, gather scattered information, and build processes that actually work.</span>
+          <span class="t-ru">Мне комфортно работать в ситуациях, где нет готовой структуры. Я разбираюсь в контексте, собираю разрозненную информацию и выстраиваю процессы, которые работают.</span>
+        </p>
+        <p>
+          <span class="t-en">People come to me when they need to untangle a mess, bring order, and calmly resolve a situation.</span>
+          <span class="t-ru">Люди приходят ко мне, когда нужно разобраться, навести порядок и спокойно решить ситуацию.</span>
+        </p>
+        <p class="about-accent">
+          <span class="t-en">Things become calmer around me — because I hold focus, create clarity, and pass that calm on to the team.</span>
+          <span class="t-ru">Со мной становится спокойнее, потому что я держу фокус и создаю ясность, заражая команду своим спокойствием.</span>
+        </p>
+      </div>
+    </div>
+    <div>
+      <div class="section-label"><span class="t-en">What Matters to Me at Work</span><span class="t-ru">Что для меня важно в работе</span></div>
+      <ul class="values-list">
+        <li><span class="t-en">Clear company goals</span><span class="t-ru">Понятные цели компании</span></li>
+        <li><span class="t-en">Respect and open communication</span><span class="t-ru">Уважение и открытая коммуникация</span></li>
+        <li><span class="t-en">Work that considers people's interests</span><span class="t-ru">Работа, учитывающая интересы людей</span></li>
+        <li><span class="t-en">Trust and autonomy</span><span class="t-ru">Доверие и самостоятельность</span></li>
+        <li><span class="t-en">Room to grow and learn</span><span class="t-ru">Возможность роста и обучения</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CAREER -->
+<section class="section section-alt">
+  <div class="section-label"><span class="t-en">My Career</span><span class="t-ru">О моей карьере</span></div>
+  <div class="two-col">
+    <div>
+      <div class="career-company">Veeam</div>
+      <div class="career-role">Licensing Specialist</div>
+      <p class="career-desc">
+        <span class="t-en">Managed the full license procurement cycle — from request to payment and ongoing tracking.</span>
+        <span class="t-ru">Я вела полный цикл закупки лицензий — от запроса до оплаты и дальнейшего учёта.</span>
+      </p>
+      <ul class="career-list">
+        <li><span class="t-en">Vendor management</span><span class="t-ru">Работа с вендорами</span></li>
+        <li><span class="t-en">Coordination between IT, Finance, and Legal</span><span class="t-ru">Координация между IT, финансами и юристами</span></li>
+        <li><span class="t-en">Contract, deadline, and data control</span><span class="t-ru">Контроль договоров, сроков и данных</span></li>
+        <li><span class="t-en">Knowledge base for 50+ products</span><span class="t-ru">База знаний по 50+ продуктам</span></li>
+      </ul>
+      <div class="career-result">
+        <span class="t-en">I didn't just complete tasks — I held the entire process so it ran without disruption.</span>
+        <span class="t-ru">Я не просто выполняла задачи — я держала процесс целиком, чтобы он работал без сбоев.</span>
+      </div>
+    </div>
+    <div>
+      <div class="career-company">TeamLead</div>
+      <div class="career-role">Information Systems Implementation Specialist</div>
+      <p class="career-desc">
+        <span class="t-en">Worked at the intersection of support, product, and operations — combining user communication, analytics, process improvement (Workflow design, Jira Automation), and team coordination.</span>
+        <span class="t-ru">Работала на пересечении поддержки, продукта и операций — совмещала коммуникацию с пользователями, аналитику, улучшение процессов (выстраивание Workflow, Jira Automation — для автоматизации процессов), координацию команд.</span>
+      </p>
+      <ul class="career-list">
+        <li><span class="t-en">Handled high-volume user requests (Atlassian: Jira, Confluence), maintaining quality across parallel tasks</span><span class="t-ru">Обработка большого потока запросов (Atlassian: Jira, Confluence), сохраняя качество при параллельных задачах</span></li>
+        <li><span class="t-en">Identified recurring issues, improved support workflows and knowledge base structure</span><span class="t-ru">Выявляла повторяющиеся проблемы, улучшала воркфлоу поддержки и структуру базы знаний</span></li>
+        <li><span class="t-en">Tested add-ons and new solutions before release</span><span class="t-ru">Тестировала аддоны и новые решения перед релизом</span></li>
+        <li><span class="t-en">Wrote technical specifications and business requirements</span><span class="t-ru">Писала технические спецификации и бизнес-требования</span></li>
+        <li><span class="t-en">Conducted user trainings</span><span class="t-ru">Проводила обучения пользователей</span></li>
+        <li><span class="t-en">Led cross-functional projects (support + dev): requirements, documentation, progress tracking</span><span class="t-ru">Участвовала в кросс-функциональных проектах (поддержка + разработка): требования, документирование, контроль прогресса</span></li>
+      </ul>
+      <div class="career-result">
+        <span class="t-en">Built a knowledge base for new processes, elevated support communication quality, and improved task predictability between internal teams and clients</span>
+        <span class="t-ru">Создала базу знаний по новым процессам, качество коммуникации поддержки подняла на новый уровень и улучшила предсказуемость задач между внутренними командами и клиентом</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 12. Tools moved into career section -->
+  <div style="margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border);">
+    <div class="section-label"><span class="t-en">Tools</span><span class="t-ru">Инструменты</span></div>
+    <ul class="tools-inline">
+      <li>Notion / Confluence</li>
+      <li>Jira</li>
+      <li>ServiceNow / Snow</li>
+      <li>Google Docs</li>
+      <li><span class="t-en">AI (Claude, ChatGPT, Gemini, DeepSeek, NanoBanano & more)</span><span class="t-ru">AI (Claude, ChatGPT, Gemini, DeepSeek, NanoBanano и др.)</span></li>
+    </ul>
+  </div>
+</section>
+
+<!-- CASES -->
+<section class="section">
+  <div class="section-label"><span class="t-en">Work Case Studies</span><span class="t-ru">Примеры рабочих кейсов</span></div>
+  <div class="cases-grid">
+    <div class="case-item">
+      <div class="case-title">
+        <span class="t-en">Emergency Remote Migration<br>(200 employees)</span>
+        <span class="t-ru">Срочный переход на удалённую работу<br>(200 сотрудников)</span>
+      </div>
+      <p class="case-text">
+        <span class="t-en">The company moved to remote in a single day. Approximately 200 employees needed new licenses urgently. I coordinated vendor, admin, and accounting, accelerated payment, and kept management informed — without involving my team lead.</span>
+        <span class="t-ru">Компания за один день переходила на удалённую работу. Нужно было срочно перевести примерно 200 сотрудников на новые лицензии. Я координировала работу между вендором, администратором и бухгалтерией, ускоряла оплату и держала коммуникацию с менеджментом без участия моего тимлида.</span>
+      </p>
+      <div class="case-result">
+        <span class="t-en">Employees got access to the required software the same day and continued working without disruption.</span>
+        <span class="t-ru">Сотрудники получили доступ к необходимому ПО в тот же день и продолжили работу без сбоев.</span>
+      </div>
+    </div>
+    <div class="case-item">
+      <div class="case-title">
+        <span class="t-en">Telephony Licensing<br>(chaos → system)</span>
+        <span class="t-ru">Лицензии для телефонии<br>(хаос → система)</span>
+      </div>
+      <p class="case-text">
+        <span class="t-en">No one before me understood how telephony licensing worked. I mapped the system, determined which licenses were needed, and built a clear management process.</span>
+        <span class="t-ru">До меня никто не понимал, как работает лицензирование телефонии. Я разобралась в системе, определила сколько и какие лицензии нужны и выстроила понятный процесс работы с ними.</span>
+      </p>
+      <div class="case-result">
+        <span class="t-en">The confusion disappeared and the company began managing licenses consciously.</span>
+        <span class="t-ru">В результате исчезла путаница, и компания начала управлять лицензиями осознанно.</span>
+      </div>
+    </div>
+    <div class="case-item">
+      <div class="case-title">
+        <span class="t-en">Oracle<br>(complex system → clear logic)</span>
+        <span class="t-ru">Oracle<br>(сложная система → понятная логика)</span>
+      </div>
+      <p class="case-text">
+        <span class="t-en">I independently figured out Oracle licensing through documentation and vendor communication, then fully documented the licensing process.</span>
+        <span class="t-ru">Я самостоятельно разобралась в лицензировании Oracle через документацию и общение с вендором и полностью задокументировала процесс работы с лицензиями.</span>
+      </p>
+      <div class="case-result">
+        <span class="t-en">This became the foundation for decision-making and reduced the risk of compliance penalties.</span>
+        <span class="t-ru">Это стало основой для принятия решений и уменьшило риски штрафов компании за неправильное лицензирование.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW I WORK + SUPERPOWERS + CONTACT -->
+<section class="section section-alt" style="padding: 0;">
+  <div class="three-col">
+    <div class="col-block">
+      <div class="section-label"><span class="t-en">How I Work</span><span class="t-ru">Как я работаю</span></div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div>
+            <div class="step-title"><span class="t-en">Understand</span><span class="t-ru">Разбираюсь</span></div>
+            <div class="step-desc"><span class="t-en">I grasp the task and its context.</span><span class="t-ru">Понимаю задачу и контекст.</span></div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div>
+            <div class="step-title"><span class="t-en">Structure</span><span class="t-ru">Структурирую</span></div>
+            <div class="step-desc"><span class="t-en">I break it into steps, connect people, and build the process.</span><span class="t-ru">Разбиваю на шаги, соединяю людей и выстраиваю процесс.</span></div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div>
+            <div class="step-title"><span class="t-en">Deliver</span><span class="t-ru">Довожу до результата</span></div>
+            <div class="step-desc"><span class="t-en">I lead the process to the end — nothing gets lost.</span><span class="t-ru">Веду процесс до конца, ничего не теряется.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-block">
+      <div class="section-label"><span class="t-en">My Superpowers</span><span class="t-ru">Мои суперсилы</span></div>
+      <div class="superpowers-list">
+        <div class="superpower-row">
+          <div class="superpower-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <div class="superpower-title"><span class="t-en">Ordering chaos</span><span class="t-ru">Навожу порядок в хаосе</span></div>
+        </div>
+        <div class="superpower-row">
+          <div class="superpower-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg></div>
+          <div class="superpower-title"><span class="t-en">Simplifying complexity</span><span class="t-ru">Упрощаю сложные процессы</span></div>
+        </div>
+        <div class="superpower-row">
+          <div class="superpower-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div class="superpower-title"><span class="t-en">Connecting people & tasks</span><span class="t-ru">Соединяю людей и задачи</span></div>
+        </div>
+        <div class="superpower-row">
+          <div class="superpower-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+          <div class="superpower-title"><span class="t-en">Making work calmer</span><span class="t-ru">Делаю работу спокойнее</span></div>
+        </div>
+        <div class="superpower-row">
+          <div class="superpower-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+          <div class="superpower-title"><span class="t-en">Strong research skills</span><span class="t-ru">Сильный ресёрч и выбор лучшего</span></div>
+        </div>
+        <div class="superpower-row">
+          <div class="superpower-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+          <div class="superpower-title"><span class="t-en">Focus under pressure</span><span class="t-ru">Держу фокус в стрессовых ситуациях</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-block col-block-dark">
+      <div class="section-label" style="color:rgba(255,255,255,0.5);border-bottom-color:var(--gold);">
+        <span class="t-en">When to Come to Me</span><span class="t-ru">С чем ко мне можно приходить</span>
+      </div>
+      <ul class="contact-list">
+        <li><span class="t-en">When there's chaos and no clear starting point</span><span class="t-ru">Когда есть хаос и непонятно с чего начать</span></li>
+        <li><span class="t-en">When tasks and deadlines are slipping</span><span class="t-ru">Когда теряются задачи и сроки</span></li>
+        <li><span class="t-en">When a process breaks and needs to be restored</span><span class="t-ru">Когда процесс «ломается» и нужно его восстановить</span></li>
+        <li><span class="t-en">When everything needs to be gathered into a system and brought to completion</span><span class="t-ru">Когда нужно всё собрать в систему и довести до результата</span></li>
+        <li><span class="t-en">When there's an urgent, high-stakes task</span><span class="t-ru">Когда есть очень срочная и ответственная задача</span></li>
+      </ul>
+      <div class="contact-cta">
+        <span class="t-en">I transform chaos into a clear, working process.</span>
+        <span class="t-ru">Я трансформирую хаос в понятный и работающий процесс.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOTTOM GRID -->
+<section class="section" style="padding:0;">
+  <div class="bottom-grid-3" style="grid-template-columns: 1fr 1fr;">
+    <div class="bottom-col">
+      <div class="section-label"><span class="t-en">Hobbies</span><span class="t-ru">Мои хобби</span></div>
+      <div class="hobby-item">
+        <div class="hobby-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 18 L8 10 L12 14 L16 7 L21 18 Z"/>
+            <circle cx="16.5" cy="5.5" r="1.2"/>
+            <path d="M14 9.5 l2.5-2 l1.5 1"/>
+          </svg>
+        </div>
+        <div>
+          <div class="hobby-title"><span class="t-en">Travel</span><span class="t-ru">Путешествия</span></div>
+          <div class="hobby-desc">
+            <span class="t-en">I plan every trip carefully to get the most out of it. <a href="https://t-j.ru/switzerland-avtodom-trip/?utm_referrer=https%3A%2F%2Fwww.google.com%2F" target="_blank" class="hobby-link">Read my article →</a></span>
+            <span class="t-ru">Тщательно планирую каждую поездку, чтобы получить максимум впечатлений. <a href="https://t-j.ru/switzerland-avtodom-trip/?utm_referrer=https%3A%2F%2Fwww.google.com%2F" target="_blank" class="hobby-link">Читать мою статью →</a></span>
+          </div>
+        </div>
+      </div>
+      <div class="hobby-item">
+        <div class="hobby-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="14" rx="1"/>
+            <path d="M8 21 l4-4 l4 4"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <path d="M21 9 l-5 4 l-4-3 l-5 4"/>
+          </svg>
+        </div>
+        <div>
+          <div class="hobby-title"><span class="t-en">Art</span><span class="t-ru">Искусство</span></div>
+          <div class="hobby-desc"><span class="t-en">Museums and exhibitions are my source of inspiration for life, style, and interiors.</span><span class="t-ru">Музеи и выставки — мой источник вдохновения для жизни, стиля и интерьера.</span></div>
+        </div>
+      </div>
+      <div class="hobby-item">
+        <div class="hobby-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="5"/>
+            <path d="M8 12 Q10 8 12 12 Q14 16 16 12"/>
+            <circle cx="8.5" cy="9" r="0.7" fill="currentColor"/>
+            <circle cx="15.5" cy="9" r="0.7" fill="currentColor"/>
+          </svg>
+        </div>
+        <div>
+          <div class="hobby-title"><span class="t-en">AI & Content</span><span class="t-ru">AI и контент</span></div>
+          <div class="hobby-desc"><span class="t-en">I use AI to structure ideas. I create content for family and friends.</span><span class="t-ru">Использую AI для структурирования идей. Создаю контент для близких и друзей.</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-col">
+      <div class="section-label"><span class="t-en">A Little Personal</span><span class="t-ru">Немного личного</span></div>
+      <p class="personal-text">
+        <span class="t-en">I love systems, though spontaneity doesn't scare me — it adds interest to life. I'm inspired by beauty in details and a mindful approach to everything.</span>
+        <span class="t-ru">Я люблю системность, хотя спонтанность меня не пугает, а привносит интерес в жизнь. Вдохновляет красота в деталях и осознанный подход к жизни.</span>
+      </p>
+      <p class="personal-text">
+        <span class="t-en">I believe even complex things can be made simple and understandable.</span>
+        <span class="t-ru">Считаю, что даже сложные вещи можно сделать простыми и понятными.</span>
+      </p>
+      <p class="personal-text">
+        <span class="t-en">Over the past few years I've built life from scratch in several countries — alongside motherhood and continuous learning. This gave me strong resilience, flexibility, and the ability to keep processes under control even in an unstable environment.</span>
+        <span class="t-ru">За последние несколько лет я выстроила жизнь с нуля в нескольких странах — параллельно с материнством и постоянным обучением. Это дало мне сильную устойчивость, гибкость и способность держать процессы под контролем даже в нестабильной среде.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-quote">
+    <span class="footer-quote-mark">❝</span>
+    <span>
+      <span class="t-en">I'm not just looking for a job — I'm looking for a place where I can simplify processes and help the team work with greater calm.</span>
+      <span class="t-ru">Я ищу не просто работу, а место, где могу упрощать процессы и помогать команде работать спокойнее.</span>
+    </span>
+    <span class="footer-quote-mark">❞</span>
+  </div>
+  <div class="footer-contacts">
+    <div class="footer-contact-item"><span>✉️</span> annakuzova.y@gmail.com</div>
+    <div class="footer-contact-item"><span>🔗</span> <a href="https://www.linkedin.com/in/anna-kolikova-228585274/" target="_blank" style="color:rgba(255,255,255,0.7);text-decoration:none;">LinkedIn</a></div>
+    <div class="footer-contact-item"><span>📍</span> <span class="t-en">Copenhagen, Denmark</span><span class="t-ru">Копенгаген, Дания</span></div>
+  </div>
+</footer>
+
+<!-- CONTACT MODAL -->
+<div id="contactModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:200; align-items:center; justify-content:center;">
+  <div style="background:var(--warm-white); padding:40px; max-width:480px; width:90%; position:relative;">
+    <button onclick="closeModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;cursor:pointer;font-size:20px;color:var(--text-light);">✕</button>
+    <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--dark);margin-bottom:8px;">
+      <span class="t-en">Send a Message</span><span class="t-ru">Написать мне</span>
+    </div>
+    <div style="font-size:13px;color:var(--text-light);margin-bottom:24px;">annakuzova.y@gmail.com</div>
+    <div style="margin-bottom:16px;">
+      <label style="display:block;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text-light);margin-bottom:8px;">
+        <span class="t-en">Message</span><span class="t-ru">Сообщение</span>
+      </label>
+      <textarea id="msgBody" rows="5" style="width:100%;border:1px solid var(--border);padding:12px;font-family:'Jost',sans-serif;font-size:14px;color:var(--text);background:var(--warm-white);resize:vertical;outline:none;" placeholder="..."></textarea>
+    </div>
+    <div style="margin-bottom:24px;">
+      <label style="display:block;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--text-light);margin-bottom:8px;">
+        <span class="t-en">How can I reach you back?</span><span class="t-ru">Как с вами связаться?</span>
+      </label>
+      <input id="msgContact" type="text" style="width:100%;border:1px solid var(--border);padding:12px;font-family:'Jost',sans-serif;font-size:14px;color:var(--text);background:var(--warm-white);outline:none;" placeholder="Email / Telegram / LinkedIn...">
+    </div>
+    <button onclick="sendMsg()" style="background:var(--dark);color:#fff;border:none;padding:14px 32px;font-family:'Jost',sans-serif;font-size:13px;font-weight:500;letter-spacing:1px;cursor:pointer;width:100%;text-transform:uppercase;">
+      <span class="t-en">Send</span><span class="t-ru">Отправить</span>
+    </button>
+  </div>
+</div>
+
+<script>
+  function setLang(lang) {
+    document.body.className = 'lang-' + lang;
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.textContent.trim().toLowerCase() === lang);
+    });
+    document.documentElement.lang = lang;
+    document.title = lang === 'en'
+      ? 'Anna Kolikova — Business Operations'
+      : 'Анна Коликова — Business Operations';
+  }
+</script>
+</body>
+</html>
